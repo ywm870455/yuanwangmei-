@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>袁家纪念馆</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #C9AD8E;
+            color: #2C1E12;
+            line-height: 1.5;
+            padding-bottom: 30px;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            background-image: url('https://img.ixintu.com/up/jz/202409/26/982d8cb6fe77a5f86b874c93f54d3c38.jpg!compress');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 6px 0 #6B3F24;
+            border-bottom: 3px solid #8B5A2B;
+            padding: 0 10px;
+        }
+
+        .hero h1 {
+            font-family: 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+            font-weight: 900;
+            font-size: 48px;
+            color: #D4AF37;
+            text-shadow: 2px 2px 0 #6B3F24, 4px 4px 0 #3F2A1A;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .hero h2 {
+            font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+            font-size: 24px;
+            color: #C69214;
+            text-shadow: 1px 1px 0 #3F2A1A;
+            background-color: rgba(0,0,0,0.3);
+            padding: 4px 16px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 400px) {
+            .hero h1 { font-size: 40px; }
+            .hero h2 { font-size: 22px; }
+        }
+        @media (max-width: 360px) {
+            .hero h1 { font-size: 36px; }
+            .hero h2 { font-size: 20px; }
+        }
+        @media (max-width: 320px) {
+            .hero h1 { font-size: 32px; }
+            .hero h2 { font-size: 18px; }
+        }
+
+        .upload-hero-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background-color: #8B5A2B;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            border: 3px solid #D4AF37;
+            box-shadow: 0 4px 0 #4A2C1A;
+            cursor: pointer;
+        }
+
+        .upload-hero-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #4A2C1A;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .ancestor-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 16px 8px;
+            background-color: #B48C6E;
+            border-radius: 50px;
+            margin: 20px 0;
+            border: 3px solid #6B3F24;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+            scrollbar-width: thin;
+            scrollbar-color: #8B5A2B #E6CCB2;
+        }
+
+        .ancestor-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+        .ancestor-grid::-webkit-scrollbar-thumb {
+            background-color: #8B5A2B;
+            border-radius: 10px;
+        }
+
+        .ancestor-avatar {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+
+        .avatar-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 38px;
+            border: 4px solid #D4AF37;
+            object-fit: cover;
+            background-color: #6B3F24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            color: white;
+            box-shadow: 0 4px 0 #3F2A1A;
+        }
+
+        .ancestor-avatar .name {
+            margin-top: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #FEF3D9;
+            text-shadow: 1px 1px 0 #3F2A1A;
+            max-width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 400px) {
+            .ancestor-avatar .name { font-size: 15px; }
+        }
+        @media (max-width: 360px) {
+            .ancestor-avatar .name { font-size: 14px; }
+        }
+        @media (max-width: 320px) {
+            .ancestor-avatar .name { font-size: 13px; }
+        }
+
+        .selected-avatar .avatar-img {
+            border-color: #FFD966;
+            box-shadow: 0 0 0 3px #FFD966;
+        }
+
+        .icon-add-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #8B5A2B;
+            border: 3px solid #D4AF37;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px auto;
+            color: white;
+            font-size: 36px;
+            box-shadow: 0 4px 0 #4A2C1A;
+            cursor: pointer;
+        }
+
+        .icon-add-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .detail-panel {
+            background-color: #7C5E44;
+            border-radius: 36px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 3px solid #D4AF37;
+            box-shadow: 0 8px 0 #4A2C1A;
+            color: #FEF3D9;
+        }
+
+        .detail-name {
+            font-size: 32px;
+            font-weight: 800;
+            color: #FFE484;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .icon-btn {
+            background-color: #8B5A2B;
+            border: 3px solid #D4AF37;
+            width: 52px;
+            height: 52px;
+            border-radius: 26px;
+            font-size: 26px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0 #4A2C1A;
+            cursor: pointer;
+        }
+
+        .icon-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .detail-bio {
+            font-size: 20px;
+            background-color: #9F7858;
+            padding: 18px;
+            border-radius: 24px;
+            margin: 16px 0;
+            border: 2px solid #D4AF37;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #2C1E12;
+            font-weight: 500;
+        }
+
+        .worship-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            background-color: #9F7858;
+            border-radius: 60px;
+            padding: 16px 8px;
+            margin: 24px 0;
+            border: 3px solid #D4AF37;
+        }
+
+        .worship-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            font-size: 34px;
+            color: #FFE484;
+            min-width: 85px;
+            flex: 1 1 auto;
+            padding: 6px;
+            border-radius: 40px;
+        }
+
+        .worship-item:active {
+            background-color: #B48C6E;
+        }
+
+        .worship-item .count {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            background-color: #6B3F24;
+            padding: 4px 10px;
+            border-radius: 30px;
+            margin-top: 4px;
+            border: 2px solid #D4AF37;
+        }
+
+        .comments-section {
+            background-color: #9F7858;
+            border-radius: 30px;
+            padding: 20px;
+            border: 3px solid #D4AF37;
+        }
+
+        .comments-section h3 {
+            font-size: 22px;
+            color: #FFE484;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .comment-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 14px;
+            font-size: 18px;
+            border: 3px solid #6B3F24;
+            border-radius: 30px;
+            background-color: #FFF2E2;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .comment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-count {
+            font-size: 16px;
+            color: #2C1E12;
+            background-color: #EEDBCA;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .comment-item {
+            background-color: #EEDBCA;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 2px solid #6B3F24;
+            position: relative;
+            color: #2C1E12;
+        }
+
+        .comment-text {
+            font-size: 18px;
+            margin-bottom: 12px;
+            padding-right: 70px;
+            word-break: break-word;
+        }
+
+        .comment-meta {
+            font-size: 14px;
+            color: #6B3F24;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .comment-actions button {
+            background: #B48C6E;
+            border: none;
+            font-size: 22px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #6B3F24;
+            box-shadow: 0 2px 0 #3F2A1A;
+        }
+
+        .comment-actions button:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            visibility: hidden;
+        }
+
+        .modal.active {
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #B48C6E;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 48px;
+            padding: 24px;
+            border: 5px solid #D4AF37;
+            box-shadow: 0 12px 0 #4A2C1A;
+        }
+
+        .modal-content h2 {
+            color: #FFE484;
+            font-size: 30px;
+            margin-bottom: 16px;
+        }
+
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            margin-bottom: 16px;
+            border: 3px solid #6B3F24;
+            border-radius: 40px;
+            background-color: #FFF2E2;
+        }
+
+        .photo-preview-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            background-color: #6B3F24;
+            border: 4px solid #D4AF37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            color: white;
+            object-fit: cover;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #8B5A2B;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 24px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            border: 3px solid #D4AF37;
+            box-shadow: 0 4px 0 #4A2C1A;
+            min-width: 110px;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .bottom-toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 16px 0 8px 0;
+            background-color: transparent;
+        }
+
+        .tool-icon {
+            background-color: #8B5A2B;
+            border: 3px solid #D4AF37;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 4px 0 #4A2C1A;
+            cursor: pointer;
+        }
+
+        .tool-icon:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .footer-tagline {
+            width: 100%;
+            background-color: #6B3F24;
+            color: #FFE484;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 20px;
+            font-family: 'KaiTi', '楷体', serif;
+            letter-spacing: 2px;
+            border-top: 3px solid #D4AF37;
+            z-index: 50;
+        }
+
+        #noSelectionMsg {
+            text-align: center;
+            background: #7C5E44;
+            color: #FFE484;
+            padding: 25px;
+            border-radius: 36px;
+            border: 3px solid #D4AF37;
+            margin: 20px 0;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero" id="hero">
+        <h1>袁家纪念馆</h1>
+        <h2>先人遗风 • 绵延千古</h2>
+        <div class="upload-hero-btn" id="uploadHeroBtn" title="更换置顶图">📷</div>
+        <input type="file" id="heroFileInput" accept="image/*" style="display: none;">
+    </div>
+
+    <div class="container">
+        <div class="ancestor-grid" id="ancestorGrid"></div>
+        <div class="icon-add-btn" id="showAddModalBtn" title="添加先人">📋</div>
+
+        <div class="detail-panel" id="detailPanel" style="display: none;">
+            <div class="detail-name">
+                <span id="selectedName"></span>
+                <div class="detail-actions">
+                    <div class="icon-btn" id="editCurrentBtn" title="编辑先人信息">✏️</div>
+                    <div class="icon-btn" id="deleteCurrentBtn" title="删除先人">🗑️</div>
+                </div>
+            </div>
+            <div class="detail-bio" id="selectedBio"></div>
+            
+            <div class="worship-stats" id="worshipStats">
+                <button class="worship-item" id="candleBtn">🕯️<span class="count" id="candleCount">0</span></button>
+                <button class="worship-item" id="flowerBtn">🌹<span class="count" id="flowerCount">0</span></button>
+                <button class="worship-item" id="cakeBtn">🎂<span class="count" id="cakeCount">0</span></button>
+            </div>
+
+            <div class="comments-section">
+                <h3>📝 缅怀留言 <span style="font-size:14px;">(200字内)</span></h3>
+                <div class="comment-input-area">
+                    <textarea id="commentInput" placeholder="写下您的追思..." maxlength="200"></textarea>
+                    <div class="comment-footer">
+                        <span class="char-count" id="commentCount">0/200</span>
+                        <button class="btn" id="submitCommentBtn" style="padding:8px 20px;">发表</button>
+                    </div>
+                </div>
+                <div id="commentsList"></div>
+            </div>
+        </div>
+
+        <div id="noSelectionMsg">点击上方头像选择先人</div>
+    </div>
+
+    <div class="bottom-toolbar">
+        <div class="tool-icon" id="exportBtn" title="导出数据备份">📤</div>
+        <div class="tool-icon" id="importBtn" title="导入数据">📥</div>
+        <input type="file" id="importFileInput" accept=".yuan,application/json" style="display: none;">
+    </div>
+
+    <div class="footer-tagline">心香一瓣 • 遥寄思念</div>
+
+    <div class="modal" id="ancestorModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">➕ 添加先人</h2>
+            <input type="text" id="modalName" placeholder="姓名">
+            <div class="photo-preview-area">
+                <div class="photo-preview" id="modalPhotoPreview">🖼️</div>
+                <button class="btn" id="modalPickPhotoBtn" style="flex:1;">选择照片</button>
+                <input type="file" id="modalPhotoFile" accept="image/*" style="display: none;">
+            </div>
+            <textarea id="modalBio" placeholder="生平简介" rows="3"></textarea>
+            <div class="flex-row">
+                <button class="btn" id="modalSaveBtn">保存</button>
+                <button class="btn" id="modalCancelBtn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            let ancestors = [];
+            let currentAncestorId = null;
+            let editingAncestorId = null;
+
+            function loadData() {
+                const saved = localStorage.getItem('yuan_memorial_final');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        ancestors = data.ancestors || [];
+                        currentAncestorId = data.currentId || null;
+                    } catch (e) {}
+                }
+                if (ancestors.length === 0) {
+                    ancestors = [
+                        {
+                            id: 'a1',
+                            name: '袁公 青山',
+                            photo: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%238B5A2B\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'70\' text-anchor=\'middle\' fill=\'%23FFD966\'%3E👴%3C/text%3E%3C/svg%3E',
+                            bio: '生于1920年，卒于2005年。一生勤劳俭朴，教子有方。',
+                            candle: 5,
+                            flower: 3,
+                            cake: 2,
+                            comments: [
+                                { id: 'c1', text: '爷爷，永远怀念您。', timestamp: '2025-03-12 10:30' }
+                            ]
+                        },
+                        {
+                            id: 'a2',
+                            name: '袁母 李氏',
+                            photo: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%238B5A2B\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'70\' text-anchor=\'middle\' fill=\'%23FFD966\'%3E👵%3C/text%3E%3C/svg%3E',
+                            bio: '生于1925年，卒于2010年。慈祥和蔼，持家有道。',
+                            candle: 8,
+                            flower: 6,
+                            cake: 4,
+                            comments: [
+                                { id: 'c2', text: '奶奶做的菜最好吃。', timestamp: '2025-03-13 14:20' }
+                            ]
+                        }
+                    ];
+                }
+            }
+            loadData();
+
+            function saveData() {
+                const data = { ancestors, currentId: currentAncestorId };
+                localStorage.setItem('yuan_memorial_final', JSON.stringify(data));
+            }
+
+            function renderAncestorGrid() {
+                const grid = document.getElementById('ancestorGrid');
+                if (!grid) return;
+                grid.innerHTML = '';
+                ancestors.forEach(anc => {
+                    const div = document.createElement('div');
+                    div.className = `ancestor-avatar ${currentAncestorId === anc.id ? 'selected-avatar' : ''}`;
+                    div.dataset.id = anc.id;
+                    div.innerHTML = `
+                        <div class="avatar-img" style="background-image: url('${anc.photo}'); background-size: cover; background-position: center;"></div>
+                        <span class="name">${anc.name}</span>
+                    `;
+                    div.addEventListener('click', () => selectAncestor(anc.id));
+                    grid.appendChild(div);
+                });
+            }
+
+            function selectAncestor(id) {
+                currentAncestorId = id;
+                saveData();
+                renderAncestorGrid();
+                updateDetailPanel();
+            }
+
+            function updateDetailPanel() {
+                const panel = document.getElementById('detailPanel');
+                const noMsg = document.getElementById('noSelectionMsg');
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (!ancestor) {
+                    panel.style.display = 'none';
+                    noMsg.style.display = 'block';
+                    return;
+                }
+                panel.style.display = 'block';
+                noMsg.style.display = 'none';
+
+                document.getElementById('selectedName').innerText = ancestor.name;
+                document.getElementById('selectedBio').innerText = ancestor.bio;
+                document.getElementById('candleCount').innerText = ancestor.candle || 0;
+                document.getElementById('flowerCount').innerText = ancestor.flower || 0;
+                document.getElementById('cakeCount').innerText = ancestor.cake || 0;
+
+                renderComments(ancestor.comments || []);
+            }
+
+            function renderComments(comments) {
+                const container = document.getElementById('commentsList');
+                if (!container) return;
+                if (!comments || comments.length === 0) {
+                    container.innerHTML = '<p style="color:#2C1E12; text-align:center;">暂无留言</p>';
+                    return;
+                }
+                let html = '';
+                comments.slice().reverse().forEach(cmt => {
+                    html += `
+                        <div class="comment-item" data-id="${cmt.id}">
+                            <div class="comment-text">${cmt.text}</div>
+                            <div class="comment-meta">${cmt.timestamp}</div>
+                            <div class="comment-actions">
+                                <button class="edit-comment" data-id="${cmt.id}">✏️</button>
+                                <button class="delete-comment" data-id="${cmt.id}">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+                document.querySelectorAll('.edit-comment').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = btn.dataset.id;
+                        const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                        if (!ancestor) return;
+                        const comment = ancestor.comments.find(c => c.id === id);
+                        if (!comment) return;
+                        const newText = prompt('编辑留言', comment.text);
+                        if (newText && newText.trim() !== '') {
+                            comment.text = newText.trim();
+                            comment.timestamp = new Date().toLocaleString();
+                            saveData();
+                            updateDetailPanel();
+                        }
+                    });
+                });
+                document.querySelectorAll('.delete-comment').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = btn.dataset.id;
+                        const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                        if (!ancestor) return;
+                        if (confirm('删除此留言？')) {
+                            ancestor.comments = ancestor.comments.filter(c => c.id !== id);
+                            saveData();
+                            updateDetailPanel();
+                        }
+                    });
+                });
+            }
+
+            document.getElementById('candleBtn')?.addEventListener('click', () => {
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (ancestor) { ancestor.candle = (ancestor.candle || 0) + 1; saveData(); updateDetailPanel(); }
+            });
+            document.getElementById('flowerBtn')?.addEventListener('click', () => {
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (ancestor) { ancestor.flower = (ancestor.flower || 0) + 1; saveData(); updateDetailPanel(); }
+            });
+            document.getElementById('cakeBtn')?.addEventListener('click', () => {
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (ancestor) { ancestor.cake = (ancestor.cake || 0) + 1; saveData(); updateDetailPanel(); }
+            });
+
+            document.getElementById('submitCommentBtn')?.addEventListener('click', () => {
+                const input = document.getElementById('commentInput');
+                const text = input.value.trim();
+                if (!text) return;
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (!ancestor) return;
+                if (!ancestor.comments) ancestor.comments = [];
+                const newComment = {
+                    id: 'c' + Date.now() + Math.random().toString(36).substr(2, 4),
+                    text, timestamp: new Date().toLocaleString()
+                };
+                ancestor.comments.push(newComment);
+                saveData();
+                input.value = '';
+                document.getElementById('commentCount').innerText = '0/200';
+                updateDetailPanel();
+            });
+
+            document.getElementById('commentInput')?.addEventListener('input', function() {
+                document.getElementById('commentCount').innerText = this.value.length + '/200';
+            });
+
+            const heroFileInput = document.getElementById('heroFileInput');
+            document.getElementById('uploadHeroBtn')?.addEventListener('click', () => heroFileInput.click());
+            heroFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    document.querySelector('.hero').style.backgroundImage = `url('${ev.target.result}')`;
+                    localStorage.setItem('yuan_hero_bg', ev.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+            const savedHero = localStorage.getItem('yuan_hero_bg');
+            if (savedHero) document.querySelector('.hero').style.backgroundImage = `url('${savedHero}')`;
+
+            document.getElementById('showAddModalBtn').addEventListener('click', () => {
+                editingAncestorId = null;
+                document.getElementById('modalTitle').innerText = '➕ 添加先人';
+                document.getElementById('modalName').value = '';
+                document.getElementById('modalBio').value = '';
+                const preview = document.getElementById('modalPhotoPreview');
+                preview.innerHTML = '🖼️'; preview.style.backgroundImage = 'none'; delete preview.dataset.photo;
+                document.getElementById('ancestorModal').classList.add('active');
+            });
+
+            document.getElementById('editCurrentBtn').addEventListener('click', () => {
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (!ancestor) return;
+                editingAncestorId = ancestor.id;
+                document.getElementById('modalTitle').innerText = '✏️ 编辑先人';
+                document.getElementById('modalName').value = ancestor.name;
+                document.getElementById('modalBio').value = ancestor.bio;
+                const preview = document.getElementById('modalPhotoPreview');
+                if (ancestor.photo) {
+                    preview.innerHTML = ''; preview.style.backgroundImage = `url('${ancestor.photo}')`; preview.dataset.photo = ancestor.photo;
+                } else { preview.innerHTML = '🖼️'; }
+                document.getElementById('ancestorModal').classList.add('active');
+            });
+
+            document.getElementById('deleteCurrentBtn').addEventListener('click', () => {
+                const ancestor = ancestors.find(a => a.id === currentAncestorId);
+                if (!ancestor) return;
+                if (confirm(`确定删除 ${ancestor.name} 吗？`)) {
+                    ancestors = ancestors.filter(a => a.id !== currentAncestorId);
+                    currentAncestorId = ancestors.length > 0 ? ancestors[0].id : null;
+                    saveData(); renderAncestorGrid(); updateDetailPanel();
+                }
+            });
+
+            const modal = document.getElementById('ancestorModal');
+            const modalPhotoFile = document.getElementById('modalPhotoFile');
+            const modalPhotoPreview = document.getElementById('modalPhotoPreview');
+            const modalSaveBtn = document.getElementById('modalSaveBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+            document.getElementById('modalPickPhotoBtn').addEventListener('click', () => modalPhotoFile.click());
+            modalPhotoFile.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    modalPhotoPreview.innerHTML = ''; modalPhotoPreview.style.backgroundImage = `url('${ev.target.result}')`; modalPhotoPreview.dataset.photo = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            modalSaveBtn.addEventListener('click', () => {
+                const name = document.getElementById('modalName').value.trim();
+                const bio = document.getElementById('modalBio').value.trim();
+                let photo = modalPhotoPreview.dataset.photo;
+                if (!name) { alert('请输入姓名'); return; }
+                if (!photo) photo = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%238B5A2B\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'70\' text-anchor=\'middle\' fill=\'%23FFD966\'%3E👤%3C/text%3E%3C/svg%3E';
+
+                if (editingAncestorId) {
+                    const ancestor = ancestors.find(a => a.id === editingAncestorId);
+                    if (ancestor) { ancestor.name = name; ancestor.bio = bio; ancestor.photo = photo; }
+                } else {
+                    const newAncestor = {
+                        id: 'a' + Date.now() + Math.random().toString(36).substr(2, 4),
+                        name, photo, bio: bio || '暂无生平介绍', candle: 0, flower: 0, cake: 0, comments: []
+                    };
+                    ancestors.push(newAncestor);
+                }
+
+                saveData(); renderAncestorGrid();
+                if (editingAncestorId) updateDetailPanel();
+                else {
+                    const newOne = ancestors.find(a => a.name === name && a.bio === bio);
+                    if (newOne) selectAncestor(newOne.id);
+                }
+                modal.classList.remove('active');
+            });
+
+            modalCancelBtn.addEventListener('click', () => modal.classList.remove('active'));
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+            document.getElementById('exportBtn').addEventListener('click', () => {
+                const dataToExport = { ancestors, currentId: currentAncestorId, heroBg: localStorage.getItem('yuan_hero_bg') || '', exportTime: new Date().toLocaleString() };
+                const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `袁家纪念馆_备份_${new Date().toISOString().slice(0,10)}.yuan`;
+                a.click(); URL.revokeObjectURL(url);
+                alert('数据已导出，请妥善保存文件');
+            });
+
+            const importFileInput = document.getElementById('importFileInput');
+            document.getElementById('importBtn').addEventListener('click', () => {
+                if (ancestors.length > 0 && !confirm('导入将覆盖当前所有数据，确定继续吗？')) return;
+                importFileInput.click();
+            });
+
+            importFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        const importedData = JSON.parse(ev.target.result);
+                        if (importedData.ancestors) ancestors = importedData.ancestors;
+                        if (importedData.currentId) {
+                            currentAncestorId = importedData.currentId;
+                            if (!ancestors.find(a => a.id === currentAncestorId)) currentAncestorId = ancestors.length > 0 ? ancestors[0].id : null;
+                        } else currentAncestorId = ancestors.length > 0 ? ancestors[0].id : null;
+                        if (importedData.heroBg) {
+                            localStorage.setItem('yuan_hero_bg', importedData.heroBg);
+                            document.querySelector('.hero').style.backgroundImage = `url('${importedData.heroBg}')`;
+                        }
+                        saveData(); renderAncestorGrid(); updateDetailPanel();
+                        alert('数据导入成功！');
+                    } catch (err) { alert('导入失败，文件格式错误'); }
+                };
+                reader.readAsText(file);
+                importFileInput.value = '';
+            });
+
+            renderAncestorGrid();
+            if (currentAncestorId && ancestors.find(a => a.id === currentAncestorId)) updateDetailPanel();
+            else { document.getElementById('detailPanel').style.display = 'none'; document.getElementById('noSelectionMsg').style.display = 'block'; }
+        })();
+    </script>
+</body>
+</html>
